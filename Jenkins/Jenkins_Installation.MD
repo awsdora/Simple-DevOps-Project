@@ -78,3 +78,20 @@ Jenkins is a self-contained Java-based program, ready to run out-of-the-box, wit
 1. Build job
 1. Check "console output"
 
+# for crumb issue
+
+asically, we need to first request for crumb with authentication and then issue POST api calls with crumb as a header along with authentication again.
+
+This is how I did it,
+
+curl -v -X GET http://jenkins-url:8080/crumbIssuer/api/json --user <username>:<password>
+Response was,
+
+{
+"_class":"hudson.security.csrf.DefaultCrumbIssuer",
+"crumb":"0db38413bd7ec9e98974f5213f7ead8b",
+"crumbRequestField":"Jenkins-Crumb"
+}
+Then the POST api with above crumb information in it.
+
+curl -X POST http://jenkins-url:8080/job/<job-name>/build --user <username>:<password> -H 'J
